@@ -1,9 +1,25 @@
+<meta http-equiv="refresh" content="720">
 <div id="video-container"></div>
 
 <script>
 const videoId = "HfyeVHIETJ4";
 const videoDuration = 600;
-const iframeCount = 20;
+
+// ===== Kiểm tra thiết bị =====
+function isMobileDevice() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    // Kiểm tra điện thoại
+    const isMobileUA = /android.*mobile|iphone|ipod|windows phone/i.test(userAgent);
+
+    // Kiểm tra theo kích thước màn hình (bổ sung)
+    const isSmallScreen = window.innerWidth <= 768;
+
+    return isMobileUA || isSmallScreen;
+}
+
+// Nếu là điện thoại thì 20 iframe, còn lại 60
+const iframeCount = isMobileDevice() ? 20 : 60;
 
 const container = document.getElementById("video-container");
 
@@ -36,15 +52,10 @@ for (let i = 0; i < iframeCount; i++) {
             iframe = createIframe();
             container.appendChild(iframe);
 
-            scheduleReload(); // tiếp tục vòng lặp với thời gian mới
+            scheduleReload();
         }, randomTime);
     }
 
     scheduleReload();
 }
 </script>
-
-
-
-
-
