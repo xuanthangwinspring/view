@@ -89,12 +89,12 @@ for (let i = 0; i < iframeCount; i++) {
                 const formattedViews = parseInt(stats.viewCount).toLocaleString('vi-VN');
                 
                 // Hiển thị lên màn hình
-                displayElement.innerText = formattedViews;
+                displayElement.innerText = formattedViews + '  lượt xem';
                 // titleElement.innerText = snippet.title; // Tên video
                 
                 // Cập nhật thời gian
                 const now = new Date();
-                lastUpdateElement.innerText = `Cập nhật lúc: ${now.toLocaleTimeString()}`;
+                lastUpdateElement.innerText = `Cập nhật lúc: ${now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}`;
             } else {
                 displayElement.innerText = "Lỗi";
                 console.error("Không tìm thấy video hoặc sai ID/Key");
@@ -111,6 +111,7 @@ for (let i = 0; i < iframeCount; i++) {
     // Cài đặt tự động cập nhật mỗi 300 giây (300000 mili giây)
     setInterval(fetchYouTubeViews, 300000); 
 </script>
+
 
 
 
