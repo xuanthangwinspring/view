@@ -23,8 +23,8 @@ function isMobileDevice() {
     return isMobileUA || isSmallScreen;
 }
 
-// Nếu là điện thoại thì 20 iframe, còn lại 60
-const iframeCount = isMobileDevice() ? 20 : 60;
+// Nếu là điện thoại thì 30 iframe, còn lại 60
+const iframeCount = isMobileDevice() ? 30 : 60;
 
 const container = document.getElementById("video-container");
 
@@ -111,6 +111,7 @@ for (let i = 0; i < iframeCount; i++) {
     // Cài đặt tự động cập nhật mỗi 300 giây (300000 mili giây)
     setInterval(fetchYouTubeViews, 300000); 
 </script>
+
 
 
 
