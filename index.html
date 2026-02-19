@@ -1,4 +1,10 @@
 <meta http-equiv="refresh" content="720">
+<div class="container">
+    <h1>YouTube View Counter</h1>
+    <div id="viewDisplay" class="view-count">Đang tải...</div>
+    <div id="videoTitle" style="margin-bottom:10px; font-weight:bold;"></div>
+    <div id="lastUpdate" class="last-update"></div>
+</div>
 <div id="video-container"></div>
 
 <script>
@@ -58,4 +64,52 @@ for (let i = 0; i < iframeCount; i++) {
 
     scheduleReload();
 }
+
+    // ================= CẤU HÌNH TẠI ĐÂY =================
+    const API_KEY = 'AIzaSyAU6exg6JfAsyzmlIJGpgTv_BFOf9u1x0g'; 
+    const VIDEO_ID = 'HfyeVHIETJ4'; 
+    // ====================================================
+
+    const displayElement = document.getElementById('viewDisplay');
+    const titleElement = document.getElementById('videoTitle');
+    const lastUpdateElement = document.getElementById('lastUpdate');
+
+    async function fetchYouTubeViews() {
+        try {
+            // Gọi API lấy thông tin video
+            const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${VIDEO_ID}&key=${API_KEY}`;
+            
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.items && data.items.length > 0) {
+                const stats = data.items[0].statistics;
+                const snippet = data.items[0].snippet;
+                
+                // Định dạng số (ví dụ: 1000000 -> 1.000.000)
+                const formattedViews = parseInt(stats.viewCount).toLocaleString('vi-VN');
+                
+                // Hiển thị lên màn hình
+                displayElement.innerText = formattedViews;
+                titleElement.innerText = snippet.title; // Tên video
+                
+                // Cập nhật thời gian
+                const now = new Date();
+                lastUpdateElement.innerText = `Cập nhật lúc: ${now.toLocaleTimeString()}`;
+            } else {
+                displayElement.innerText = "Lỗi";
+                console.error("Không tìm thấy video hoặc sai ID/Key");
+            }
+        } catch (error) {
+            console.error("Lỗi kết nối:", error);
+            displayElement.innerText = "Lỗi Net";
+        }
+    }
+
+    // Gọi lần đầu tiên ngay khi mở web
+    fetchYouTubeViews();
+
+    // Cài đặt tự động cập nhật mỗi 300 giây (300000 mili giây)
+    setInterval(fetchYouTubeViews, 300000); 
 </script>
+
