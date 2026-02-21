@@ -76,8 +76,8 @@
                 const randomStart = Math.floor(Math.random() * (videoDuration - 5));
 
                 const iframe = document.createElement("iframe");
-                iframe.width = "560";
-                iframe.height = "315";
+                iframe.width = "256";
+                iframe.height = "144";
                 iframe.src = `https://www.youtube.com/embed/${videoId}?start=${randomStart}&rel=0&autoplay=1&mute=1`;
                 iframe.title = "YouTube video player";
                 iframe.frameBorder = "0";
@@ -157,3 +157,4 @@
 </body>
 
 </html>
+
