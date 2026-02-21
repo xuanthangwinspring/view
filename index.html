@@ -1,121 +1,157 @@
-<meta http-equiv="refresh" content="720">
-<div class="container">
-    <h1><div id="viewDisplay" class="view-count">Đang tải...</div></h1>
-    <!--<div id="videoTitle" style="margin-bottom:10px; font-weight:bold;"></div>-->
-    <h2><div id="lastUpdate" class="last-update"></div></h2>
-</div>
-<div id="video-container"></div>
+<!DOCTYPE html>
+<html>
 
-<script>
-const videoId = "HfyeVHIETJ4";
-const videoDuration = 600;
+<head>
+    <meta http-equiv="refresh" content="720">
+    <meta charset="utf-8">
+    <style>
+        /* 1. Thiết lập mặc định (Giao diện Sáng - Light Mode) */
+        :root {
+            --background-color: #ffffff;
+            /* Nền trắng */
+            --text-color: #333333;
+            /* Chữ tối */
+        }
 
-// ===== Kiểm tra thiết bị =====
-function isMobileDevice() {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        /* 2. Thiết lập cho Giao diện Tối (Dark Mode) - Dựa trên cài đặt thiết bị */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-color: #121212;
+                /* Nền tối (gần đen) */
+                --text-color: #ffffff;
+                /* Chữ trắng */
+            }
+        }
 
-    // Kiểm tra điện thoại
-    const isMobileUA = /android.*mobile|iphone|ipod|windows phone/i.test(userAgent);
+        /* 3. Áp dụng các biến vào body */
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            /* Hiệu ứng chuyển mượt mà */
+            font-family: sans-serif;
+        }
+    </style>
+</head>
 
-    // Kiểm tra theo kích thước màn hình (bổ sung)
-    const isSmallScreen = window.innerWidth <= 768;
+<body>
 
-    return isMobileUA || isSmallScreen;
-}
+    <div class="container">
+        <h1>
+            <div id="viewDisplay" class="view-count">Đang tải...</div>
+        </h1>
+        <!--<div id="videoTitle" style="margin-bottom:10px; font-weight:bold;"></div>-->
+        <h2>
+            <div id="lastUpdate" class="last-update"></div>
+        </h2>
+    </div>
+    <div id="video-container"></div>
 
-// Nếu là điện thoại thì 24 iframe, còn lại 60
-const iframeCount = isMobileDevice() ? 24 : 60;
+    <script>
+        const videoId = "HfyeVHIETJ4";
+        const videoDuration = 600;
 
-const container = document.getElementById("video-container");
+        // ===== Kiểm tra thiết bị =====
+        function isMobileDevice() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-for (let i = 0; i < iframeCount; i++) {
+            // Kiểm tra điện thoại
+            const isMobileUA = /android.*mobile|iphone|ipod|windows phone/i.test(userAgent);
 
-    function createIframe() {
-        const randomStart = Math.floor(Math.random() * (videoDuration - 5));
+            // Kiểm tra theo kích thước màn hình (bổ sung)
+            const isSmallScreen = window.innerWidth <= 768;
 
-        const iframe = document.createElement("iframe");
-        iframe.width = "560";
-        iframe.height = "315";
-        iframe.src = `https://www.youtube.com/embed/${videoId}?start=${randomStart}&rel=0&autoplay=1&mute=1`;
-        iframe.title = "YouTube video player";
-        iframe.frameBorder = "0";
-        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-        iframe.allowFullscreen = true;
-        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+            return isMobileUA || isSmallScreen;
+        }
 
-        return iframe;
-    }
+        // Nếu là điện thoại thì 24 iframe, còn lại 60
+        const iframeCount = isMobileDevice() ? 24 : 60;
 
-    let iframe = createIframe();
-    container.appendChild(iframe);
+        const container = document.getElementById("video-container");
 
-    function scheduleReload() {
-        const randomTime = Math.floor(Math.random() * (139000 - 123000 + 1)) + 123000;
+        for (let i = 0; i < iframeCount; i++) {
 
-        setTimeout(() => {
-            container.removeChild(iframe);
-            iframe = createIframe();
+            function createIframe() {
+                const randomStart = Math.floor(Math.random() * (videoDuration - 5));
+
+                const iframe = document.createElement("iframe");
+                iframe.width = "560";
+                iframe.height = "315";
+                iframe.src = `https://www.youtube.com/embed/${videoId}?start=${randomStart}&rel=0&autoplay=1&mute=1`;
+                iframe.title = "YouTube video player";
+                iframe.frameBorder = "0";
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+                iframe.allowFullscreen = true;
+                iframe.referrerPolicy = "strict-origin-when-cross-origin";
+
+                return iframe;
+            }
+
+            let iframe = createIframe();
             container.appendChild(iframe);
 
-            scheduleReload();
-        }, randomTime);
-    }
+            function scheduleReload() {
+                const randomTime = Math.floor(Math.random() * (139000 - 123000 + 1)) + 123000;
 
-    scheduleReload();
-}
+                setTimeout(() => {
+                    container.removeChild(iframe);
+                    iframe = createIframe();
+                    container.appendChild(iframe);
 
-    // ================= CẤU HÌNH TẠI ĐÂY =================
-    const API_KEY = 'AIzaSyAU6exg6JfAsyzmlIJGpgTv_BFOf9u1x0g'; 
-    const VIDEO_ID = 'HfyeVHIETJ4'; 
-    // ====================================================
-
-    const displayElement = document.getElementById('viewDisplay');
-    // const titleElement = document.getElementById('videoTitle');
-    const lastUpdateElement = document.getElementById('lastUpdate');
-
-    async function fetchYouTubeViews() {
-        try {
-            // Gọi API lấy thông tin video
-            const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${VIDEO_ID}&key=${API_KEY}`;
-            
-            const response = await fetch(url);
-            const data = await response.json();
-
-            if (data.items && data.items.length > 0) {
-                const stats = data.items[0].statistics;
-                const snippet = data.items[0].snippet;
-                
-                // Định dạng số (ví dụ: 1000000 -> 1.000.000)
-                const formattedViews = parseInt(stats.viewCount).toLocaleString('vi-VN');
-                
-                // Hiển thị lên màn hình
-                displayElement.innerText = formattedViews + '  lượt xem';
-                // titleElement.innerText = snippet.title; // Tên video
-                
-                // Cập nhật thời gian
-                const now = new Date();
-                lastUpdateElement.innerText = `Cập nhật lúc: ${now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}`;
-            } else {
-                displayElement.innerText = "Lỗi";
-                console.error("Không tìm thấy video hoặc sai ID/Key");
+                    scheduleReload();
+                }, randomTime);
             }
-        } catch (error) {
-            console.error("Lỗi kết nối:", error);
-            displayElement.innerText = "Lỗi Net";
+
+            scheduleReload();
         }
-    }
 
-    // Gọi lần đầu tiên ngay khi mở web
-    fetchYouTubeViews();
+        // ================= CẤU HÌNH TẠI ĐÂY =================
+        const API_KEY = 'AIzaSyAU6exg6JfAsyzmlIJGpgTv_BFOf9u1x0g';
+        const VIDEO_ID = 'HfyeVHIETJ4';
+        // ====================================================
 
-    // Cài đặt tự động cập nhật mỗi 300 giây (300000 mili giây)
-    setInterval(fetchYouTubeViews, 300000); 
-</script>
+        const displayElement = document.getElementById('viewDisplay');
+        // const titleElement = document.getElementById('videoTitle');
+        const lastUpdateElement = document.getElementById('lastUpdate');
 
+        async function fetchYouTubeViews() {
+            try {
+                // Gọi API lấy thông tin video
+                const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${VIDEO_ID}&key=${API_KEY}`;
 
+                const response = await fetch(url);
+                const data = await response.json();
 
+                if (data.items && data.items.length > 0) {
+                    const stats = data.items[0].statistics;
+                    const snippet = data.items[0].snippet;
 
+                    // Định dạng số (ví dụ: 1000000 -> 1.000.000)
+                    const formattedViews = parseInt(stats.viewCount).toLocaleString('vi-VN');
 
+                    // Hiển thị lên màn hình
+                    displayElement.innerText = formattedViews + '  lượt xem';
+                    // titleElement.innerText = snippet.title; // Tên video
 
+                    // Cập nhật thời gian
+                    const now = new Date();
+                    lastUpdateElement.innerText = `Cập nhật lúc: ${now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}`;
+                } else {
+                    displayElement.innerText = "Lỗi";
+                    console.error("Không tìm thấy video hoặc sai ID/Key");
+                }
+            } catch (error) {
+                console.error("Lỗi kết nối:", error);
+                displayElement.innerText = "Lỗi Net";
+            }
+        }
 
+        // Gọi lần đầu tiên ngay khi mở web
+        fetchYouTubeViews();
 
+        // Cài đặt tự động cập nhật mỗi 300 giây (300000 mili giây)
+        setInterval(fetchYouTubeViews, 300000); 
+    </script>
+</body>
+
+</html>
